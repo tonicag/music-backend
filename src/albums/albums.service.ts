@@ -3,8 +3,10 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { CreateAlbumDTO } from 'src/albums/dto/create-album.dto';
 import { Album } from 'src/albums/entities/album.entity';
 import { ArtistsService } from 'src/artists/artists.service';
+import { PaginationQueryDto } from 'src/common/dto/pagination-query.dto';
+import { PaginatedResponseDto } from 'src/common/dto/pagination-respone.dto';
 import { SongsService } from 'src/songs/songs.service';
-import { Repository } from 'typeorm';
+import { Repository, SelectQueryBuilder } from 'typeorm';
 
 @Injectable()
 export class AlbumsService {
@@ -15,8 +17,52 @@ export class AlbumsService {
     private readonly songsService: SongsService,
   ) {}
 
-  async findAll() {
-    return await this.albumsRepository.find();
+  async findAll(
+    queryOptionsDto: PaginationQueryDto,
+  ): Promise<PaginatedResponseDto<Album>> {
+    const {
+      page = 1,
+      limit = 10,
+      filterColumn,
+      filterValue,
+      searchKey,
+    } = queryOptionsDto;
+
+    const queryBuilder: SelectQueryBuilder<Album> =
+      this.albumsRepository.createQueryBuilder('album');
+
+    if (filterColumn && filterValue) {
+      queryBuilder.andWhere(`album.${filterColumn} = :filterValue`, {
+        filterValue,
+      });
+    }
+
+    if (searchKey) {
+      queryBuilder.andWhere(`album.name LIKE :searchKey`, {
+        searchKey: `%${searchKey}%`,
+      });
+    }
+
+    const [data, total] = await queryBuilder
+      .skip((page - 1) * limit)
+      .take(limit)
+      .getManyAndCount();
+
+    const pageCount = Math.ceil(total / limit);
+    const hasPreviousPage = page > 1;
+    const hasNextPage = page < pageCount;
+
+    return {
+      meta: {
+        page,
+        take: limit,
+        itemCount: total,
+        pageCount,
+        hasPreviousPage,
+        hasNextPage,
+      },
+      data,
+    };
   }
 
   async createAlbum(createAlbumDto: CreateAlbumDTO) {
