@@ -1,9 +1,10 @@
 import { Body, Controller, Post, UseInterceptors } from '@nestjs/common';
-import { ApiOperation } from '@nestjs/swagger';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { ResponseInterceptor } from 'interceptors/response.interceptors';
 import { CreateSongDto } from 'src/songs/dto/create-song.dto';
 import { SongsService } from 'src/songs/songs.service';
 
+@ApiTags('songs')
 @Controller('songs')
 export class SongsController {
   constructor(private readonly songsService: SongsService) {}
