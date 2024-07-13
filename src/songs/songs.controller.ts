@@ -1,6 +1,5 @@
-import { Body, Controller, Post, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Post } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
-import { ResponseInterceptor } from 'interceptors/response.interceptors';
 import { CreateSongDto } from 'src/songs/dto/create-song.dto';
 import { SongsService } from 'src/songs/songs.service';
 
