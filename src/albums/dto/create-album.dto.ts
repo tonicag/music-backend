@@ -1,5 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsArray, IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import {
+  IsArray,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 
 export class CreateAlbumDTO {
   @ApiProperty({
@@ -22,6 +28,7 @@ export class CreateAlbumDTO {
     example: 1,
     description: 'The ID of the artist.',
   })
+  @IsNumber()
   @IsNotEmpty()
   artistId: number;
 
