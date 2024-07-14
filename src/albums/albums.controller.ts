@@ -1,8 +1,9 @@
-import { Body, Controller, Get, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query, UseGuards } from '@nestjs/common';
 import { ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AlbumsService } from 'src/albums/albums.service';
 import { CreateAlbumDTO } from 'src/albums/dto/create-album.dto';
 import { Album } from 'src/albums/entities/album.entity';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { PaginationQueryDto } from 'src/common/dto/pagination-query.dto';
 import { PaginatedResponseDto } from 'src/common/dto/pagination-respone.dto';
 
