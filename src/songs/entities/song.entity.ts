@@ -11,6 +11,9 @@ export class Song {
   @Column()
   name: string;
 
+  @Column()
+  duration: number | null;
+
   @ManyToOne(() => Artist, (artist) => artist.songs)
   artist: Artist;
 

@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { ArtistsService } from 'src/artists/artists.service';
 import { ArtistDto } from 'src/artists/dto/artist.dto';
@@ -19,5 +19,17 @@ export class ArtistsController {
   @ApiResponse({ status: 400, description: 'Invalid input.' })
   async createArtist(@Body() createArtistDto: CreateArtistDto) {
     return await this.artistsService.createArtist(createArtistDto);
+  }
+
+  @Get()
+  @ApiOperation({ summary: 'Get all artists' })
+  @ApiResponse({
+    status: 201,
+    description: 'The artist has been successfully created.',
+    type: ArtistDto,
+  })
+  @ApiResponse({ status: 400, description: 'Invalid input.' })
+  async getAllArtists() {
+    return await this.artistsService.getAllArtists();
   }
 }
