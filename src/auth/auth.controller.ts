@@ -14,10 +14,11 @@ export class AuthController {
   @ApiOperation({ summary: 'Log in' })
   @ApiBody({ type: LoginDto, description: 'User credentials for login' })
   @ApiResponse({ status: 200, description: 'Successfully logged in' })
-  @UseGuards(LocalAuthGuard)
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   @Post('login')
+  @UseGuards(LocalAuthGuard)
   async login(@Request() req) {
+    console.log({ req });
     return this.authService.login(req.user);
   }
 
