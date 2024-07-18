@@ -17,6 +17,8 @@ export class ArtistsService {
     return await this.artistsRepository.findOne({ where: { id } });
   }
 
+  async getAllArtists() {}
+
   async createArtist(creteArtistDto: CreateArtistDto): Promise<ArtistDto> {
     const artist = await this.artistsRepository.save(creteArtistDto);
 

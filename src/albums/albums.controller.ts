@@ -26,7 +26,6 @@ export class AlbumsController {
   async findAll(
     @Query() queryOptionsDto: PaginationQueryDto,
   ): Promise<PaginatedResponseDto<Album>> {
-    console.log({ queryOptionsDto });
     return this.albumsService.findAll(queryOptionsDto);
   }
 
