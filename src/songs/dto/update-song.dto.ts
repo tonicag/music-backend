@@ -1,4 +1,9 @@
-import { IsOptional, IsString, IsNumber } from 'class-validator';
+import {
+  IsOptional,
+  IsString,
+  IsNumber,
+  IsNumberString,
+} from 'class-validator';
 
 export class UpdateSongDto {
   @IsOptional()
@@ -6,10 +11,10 @@ export class UpdateSongDto {
   name?: string;
 
   @IsOptional()
-  @IsNumber()
+  @IsNumberString()
   artistId?: number;
 
   @IsOptional()
-  @IsNumber()
+  @IsNumberString()
   albumId?: number;
 }
