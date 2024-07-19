@@ -40,7 +40,7 @@ export class SongsService {
 
     if (searchKey) {
       queryBuilder.andWhere(`song.name LIKE :searchKey`, {
-        searchKey: `%${searchKey}%`,
+        searchKey: `%${searchKey.toLowerCase()}%`,
       });
     }
 
@@ -69,6 +69,7 @@ export class SongsService {
   async findAllByIds(ids: number[]) {
     return await this.songsRepository.find({
       where: { id: In(ids) },
+      relations: { artist: true },
     });
   }
 

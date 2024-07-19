@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateAlbumDTO } from 'src/albums/dto/create-album.dto';
 import { UpdateAlbumDTO } from 'src/albums/dto/update-album.dto';
@@ -81,6 +85,18 @@ export class AlbumsService {
       ? await this.songsService.findAllByIds(createAlbumDto.songs || [])
       : [];
 
+    const validSongs = songs.every(
+      (s) => String(s.artist.id) === String(createAlbumDto.artist),
+    );
+    console.log({
+      dd: songs.map((s) => s.artist),
+      validSongs,
+      artist: createAlbumDto.artist,
+    });
+    if (!validSongs) {
+      throw new BadRequestException('One or more songs is invalid!');
+    }
+
     const album = this.albumsRepository.create({
       ...createAlbumDto,
       songs,
@@ -112,6 +128,13 @@ export class AlbumsService {
       ? await this.songsService.findAllByIds(updateAlbumDto.songs)
       : [];
 
+    const validSongs = songs.every(
+      (s) => String(s.artist.id) === String(updateAlbumDto.artist),
+    );
+
+    if (!validSongs) {
+      throw new BadRequestException('One or more songs is invalid!');
+    }
     Object.assign(album, updateAlbumDto, { artist, songs });
 
     return await this.albumsRepository.save(album);
