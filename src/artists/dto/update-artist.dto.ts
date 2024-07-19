@@ -9,12 +9,4 @@ export class UpdateArtistDto {
   @IsString()
   @IsNotEmpty()
   name: string;
-
-  @ApiProperty({
-    example: '123',
-    description: 'The age of the artist',
-  })
-  @IsNumber()
-  @IsNotEmpty()
-  age: number;
 }
