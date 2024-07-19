@@ -7,7 +7,7 @@ import {
   IsString,
 } from 'class-validator';
 
-export class CreateAlbumDTO {
+export class UpdateAlbumDTO {
   @ApiProperty({
     example: 'Album Name',
     description: 'The name of the album.',

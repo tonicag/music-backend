@@ -1,7 +1,18 @@
-import { Body, Controller, Get, Post, Query, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
 import { ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AlbumsService } from 'src/albums/albums.service';
 import { CreateAlbumDTO } from 'src/albums/dto/create-album.dto';
+import { UpdateAlbumDTO } from 'src/albums/dto/update-album.dto';
 import { Album } from 'src/albums/entities/album.entity';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { PaginationQueryDto } from 'src/common/dto/pagination-query.dto';
@@ -33,5 +44,29 @@ export class AlbumsController {
   @Post()
   async createAlbum(@Body() createAlbumDto: CreateAlbumDTO): Promise<Album> {
     return this.albumsService.createAlbum(createAlbumDto);
+  }
+
+  @Put(':id')
+  @ApiOperation({ summary: 'Update an existing album' })
+  @ApiResponse({
+    status: 200,
+    description: 'The album has been successfully updated.',
+    type: Album,
+  })
+  async updateAlbum(
+    @Param('id') id: number,
+    @Body() updateAlbumDto: UpdateAlbumDTO,
+  ): Promise<Album> {
+    return this.albumsService.updateAlbum(id, updateAlbumDto);
+  }
+
+  @Delete(':id')
+  @ApiOperation({ summary: 'Delete an existing album' })
+  @ApiResponse({
+    status: 200,
+    description: 'The album has been successfully deleted.',
+  })
+  async deleteAlbum(@Param('id') id: number): Promise<void> {
+    return this.albumsService.deleteAlbum(id);
   }
 }

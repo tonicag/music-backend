@@ -104,6 +104,15 @@ export class SongsService {
     return this.songsRepository.save(song);
   }
 
+  async setAlbumToNull(albumId: number): Promise<void> {
+    await this.songsRepository
+      .createQueryBuilder()
+      .update(Song)
+      .set({ album: null })
+      .where('album.id = :albumId', { albumId })
+      .execute();
+  }
+
   async remove(id: number): Promise<void> {
     const result = await this.songsRepository.delete(id);
     if (result.affected === 0) {
